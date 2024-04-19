@@ -1,6 +1,7 @@
 """
 Main URL Mapping of the app.
 """
+
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
@@ -33,7 +34,7 @@ if settings.DEBUG:
 
     schema_view = get_schema_view(
         openapi.Info(
-            title="Parser Backend",
+            title="Chat Backend",
             default_version="1.0",
             description="Test description",
             terms_of_service="https://www.google.com/policies/terms/",

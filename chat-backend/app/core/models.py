@@ -76,6 +76,11 @@ class User(AbstractBaseUser, BaseModelWithUID, PermissionsMixin):
         blank=True,
         db_index=True,
     )
+    phone = models.CharField(
+        max_length=20,
+        blank=True,
+        db_index=True,
+    )
     slug = AutoSlugField(
         populate_from="first_name",
         unique=True,

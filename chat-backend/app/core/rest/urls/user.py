@@ -7,6 +7,9 @@ from core.rest.views.user import (
     UserList,
     UserDetail,
     UserRegistration,
+    user_login,
+    UserLogin,
+    LoginGeneric,
 )
 
 urlpatterns = [
@@ -14,4 +17,7 @@ urlpatterns = [
     path("/<uuid:uid>", UserDetail.as_view(), name="user-details"),
     path("/register", UserRegistration.as_view(), name="user-registration"),
     path("/me", MeDetail.as_view(), name="me-detail"),
+    # path("/login", user_login, name="user-login"),
+    path("/login", UserLogin.as_view(), name="user-login"),
+    # path("/login", LoginGeneric.as_view(), name="user-login"),
 ]

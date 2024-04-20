@@ -1,9 +1,10 @@
 """Serializer for user model."""
 
+from django.contrib.auth import get_user_model, authenticate
+
 from rest_framework import status
 from rest_framework import serializers
 
-from django.contrib.auth import get_user_model
 
 User = get_user_model()
 
@@ -55,6 +56,7 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
                 detail="Password and confirm password don't match!!!",  # Error message
                 code=status.HTTP_400_BAD_REQUEST,  # HTTP status code
             )
+        return value
 
     class Meta:
         model = User  # Specify the model for the serializer
@@ -101,3 +103,40 @@ class MeSerializer(serializers.ModelSerializer):
             "created_at",
             "updated_at",
         )
+
+
+class LoginSerializer(serializers.Serializer):
+    email = serializers.EmailField(required=True)
+    id = serializers.CharField(max_length=15, read_only=True)
+    password = serializers.CharField(
+        max_length=255,
+        write_only=True,
+        style={"input_type": "password"},
+    )
+
+    def validate(self, attrs):
+        email = attrs.get("email", None)
+        password = attrs.get("password", None)
+        if not email:
+            raise serializers.ValidationError(
+                detail="An email address is required for login",
+                code=status.HTTP_400_BAD_REQUEST,
+            )
+        if not password:
+            raise serializers.ValidationError(
+                detail="A password is requied for login",
+                code=status.HTTP_400_BAD_REQUEST,
+            )
+        user = authenticate(username=email, password=password)
+        if user is None:
+            raise serializers.ValidationError(
+                detail="Invalid Credentials", code=status.HTTP_400_BAD_REQUEST
+            )
+        if not user.is_active:
+            raise serializers.ValidationError(
+                detail="User is Inactive", code=status.HTTP_400_BAD_REQUEST
+            )
+        return {
+            "email": user.email,
+            "id": user.id,
+        }

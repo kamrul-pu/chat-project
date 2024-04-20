@@ -58,6 +58,15 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
             )
         return value
 
+    def validate_email(self, email):
+        user = User.objects.get(email=email)
+        if user:
+            raise serializers.ValidationError(
+                detail="User with this email already exists",
+                code=status.HTTP_400_BAD_REQUEST,
+            )
+        return email
+
     class Meta:
         model = User  # Specify the model for the serializer
         fields = (

@@ -32,9 +32,22 @@ User = get_user_model()
 
 
 class UserList(ListCreateAPIView):
-    permission_classes = (IsAdminUser,)
+    permission_classes = ()
     serializer_class = UserListSerializer
     queryset = User().get_all_actives()
+
+    def get_permissions(self):
+        if self.request.method == "GET":
+            return (IsAuthenticated(),)
+        else:
+            return (IsAdminUser(),)
+
+    def get_queryset(self):
+        queryset = self.queryset
+        user = self.request.user
+        if self.request.method == "GET" and not user.is_superuser:
+            queryset = queryset.exclude(id=user.id)
+        return queryset
 
 
 class UserDetail(RetrieveUpdateDestroyAPIView):

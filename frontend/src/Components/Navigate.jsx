@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-export default function Navigate() {
+const Navigate = () => {
     return (
         <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
             <div className="container-fluid">
@@ -18,12 +18,15 @@ export default function Navigate() {
                     <span className="navbar-toggler-icon"></span>
                 </button>
                 <div className="collapse navbar-collapse" id="navbarNav">
-                    <ul className="navbar-nav">
+                    <ul className="navbar-nav ms-auto"> {/* "ms-auto" to align navbar items to right */}
                         <li className="nav-item">
                             <Link to="/register" className="nav-link">Register</Link>
                         </li>
                         <li className="nav-item">
                             <Link to="/login" className="nav-link">Login</Link>
+                        </li>
+                        <li className="nav-item">
+                            <Link to="/chat" className="nav-link">Chat</Link>
                         </li>
                     </ul>
                 </div>
@@ -31,3 +34,5 @@ export default function Navigate() {
         </nav>
     );
 }
+
+export default Navigate;

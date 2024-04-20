@@ -8,21 +8,15 @@ import ChatArea from './Components/ChatArea';
 
 function App() {
   return (
-    <>
-      <div className='chat-container'>
-        <Sidebar />
-        <ChatArea />
-      </div>
-
-    </>
-    // <BrowserRouter>
-    //   <Navigate />
-    //   <Routes>
-    //     <Route path='/login' element={<Login />}></Route>
-    //     <Route path='/register' element={<Register />}></Route>
-    //     {/* <Route path="*" element={<h1>404 Not Found</h1>} /> */}
-    //   </Routes>
-    // </BrowserRouter>
+    <BrowserRouter>
+      <Navigate />
+      <Routes>
+        <Route path='/login' element={<Login />}></Route>
+        <Route path='/register' element={<Register />}></Route>
+        {/* <Route path="*" element={<h1>404 Not Found</h1>} /> */}
+        <Route path='/chat' element={<><Sidebar /> <ChatArea /></>}></Route>
+      </Routes>
+    </BrowserRouter>
   );
 }
 

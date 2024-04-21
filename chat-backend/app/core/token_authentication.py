@@ -3,6 +3,7 @@
 from datetime import datetime, timedelta, timezone  # Import datetime related modules
 from django.conf import settings  # Import Django settings
 from django.contrib.auth import get_user_model  # Import Django user model
+from channels.db import database_sync_to_async
 from jwt.exceptions import (
     InvalidTokenError,
     ExpiredSignatureError,
@@ -47,7 +48,7 @@ class JWTAuthentication(BaseAuthentication):
             user = User.objects.get(
                 id=user_id
             )  # Retrieve user object from the database
-            return user  # Return authenticated user
+            return (user, token)  # Return authenticated user
         except (InvalidTokenError, ExpiredSignatureError, User.DoesNotExist):
             # Handle invalid or expired token, or user not found in the database
             raise AuthenticationFailed(detail="Invalid Token", code=400)
@@ -90,6 +91,17 @@ class JWTAuthentication(BaseAuthentication):
         if auth_header and auth_header.startswith("Bearer "):
             return auth_header.split(" ")[1]  # Extract the token part from the header
         return None  # Return None if no token found
+
+    @database_sync_to_async
+    def authenticate_websocket(self, scope, token):
+        try:
+            payload = jwt.decode(token, settings.SECRET_KEY, algorithms=["HS256"])
+            self.verify_token(payload=payload)
+            user_id = payload["id"]
+            user = User.objects.get(id=user_id)
+            return user
+        except (InvalidTokenError, ExpiredSignatureError, User.DoesNotExist):
+            raise AuthenticationFailed("invalid Token", code=400)
 
     @staticmethod
     def generate_token(payload):

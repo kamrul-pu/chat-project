@@ -23,7 +23,8 @@ export default function Register() {
             .then(response => {
                 // if (!response.ok) {
                 //     console.log("RRRRRRRRRRRRR", response.json())
-                //     throw new Error(`HTTP error! Status: ${response.status}`);
+                //     alert(`HTTP error! Status: ${response.status}`);
+                //     return
                 // }
                 return response.json();
             })
@@ -46,7 +47,7 @@ export default function Register() {
             })
     }
     return (
-        <div className='container text-center'>
+        <div className='text-center'>
             <h2>Register Now</h2>
             <hr />
             <div className='mt-3'>

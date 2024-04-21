@@ -10,11 +10,12 @@ function App() {
   return (
     <BrowserRouter>
       <Navigate />
+      <hr />
       <Routes>
         <Route path='/login' element={<Login />}></Route>
         <Route path='/register' element={<Register />}></Route>
         {/* <Route path="*" element={<h1>404 Not Found</h1>} /> */}
-        <Route path='/chat' element={<><Sidebar /> <ChatArea /></>}></Route>
+        <Route path='/chat' element={<div className='row'><div className='col-lg-4 col-sm-12 col-md-6'><Sidebar /> </div> <div className='col-lg-8 col-sm-12 col-md-6'><ChatArea /></div></div>}></Route>
       </Routes>
     </BrowserRouter>
   );

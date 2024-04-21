@@ -10,6 +10,10 @@ export default function Login() {
         "password": "",
     })
     const handleFormSubmit = () => {
+        if (formData.email == "" || formData.password == "") {
+            alert("Email and password is required to login");
+            return;
+        }
         fetch(`${BASE_URL}/users/login`, {
             method: "POST",
             headers: {
@@ -20,6 +24,8 @@ export default function Login() {
             .then(response => response.json())
             .then(data => {
                 console.log(data);
+                const token = data.token;
+                document.cookie = `token=${token}; path=/`;
                 alert(`Welcome login successfull!!!`)
                 // Reset form data after successful Login
                 setFormData({
